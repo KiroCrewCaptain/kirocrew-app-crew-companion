@@ -1,0 +1,376 @@
+{
+  "apps": {
+    "crewCompanion": {
+      "accessory": {
+        "coffee": "コーヒー",
+        "noprop": "小物なし",
+        "partyhat": "パーティーハット",
+        "popper": "クラッカー",
+        "shades": "サングラス",
+        "sleepmask": "スリープマスク"
+      },
+      "break": {
+        "breathe": {
+          "1": "ゆっくり深呼吸しませんか？",
+          "2": "1分だけ呼吸するといいかもしれません。",
+          "3": "少し一緒に呼吸しませんか？",
+          "4": "一緒にゆっくり深呼吸しましょう。",
+          "5": "よければ、短い呼吸の休憩を。"
+        },
+        "distance": {
+          "1": "少し遠くを眺めてみましょう。",
+          "2": "目を遠くへ向けてみましょう。",
+          "3": "20秒ほど遠くの景色で目を休めましょう。",
+          "4": "少し窓の外を見てみましょう。",
+          "5": "遠くのものに目の焦点を合わせてみましょう。"
+        },
+        "stretch": {
+          "1": "少しストレッチしませんか？",
+          "2": "肩を後ろに回してみましょう。",
+          "3": "立ち上がって体をほぐしましょう。",
+          "4": "背中がストレッチを求めています。",
+          "5": "軽くストレッチして、それから戻りましょう。"
+        },
+        "water": {
+          "1": "水分補給しませんか？",
+          "2": "水を一口いかがですか。",
+          "3": "そろそろ水を注ぎ足しましょう。",
+          "4": "少し水を飲むといいかもしれません。",
+          "5": "水分チェック — 何か飲みませんか？"
+        }
+      },
+      "breathe": {
+        "end": "終了",
+        "exhale": "吐く",
+        "exhale_with_route": "{route}吐く",
+        "hold": "止める",
+        "inhale": "吸う",
+        "inhale_with_route": "{route}吸う",
+        "ready": "準備",
+        "start": "一緒に呼吸する",
+        "through_mouth": "口から",
+        "through_nose": "鼻から"
+      },
+      "color": {
+        "belly": "おなか",
+        "bodyFur": "体・毛",
+        "bodyOutline": "体の輪郭",
+        "chinLegs": "あご・脚",
+        "currentEffect": "現在",
+        "customizeBtn": "色をカスタマイズ",
+        "delete": "削除",
+        "earsShadow": "耳・影",
+        "hideBtn": "色を隠す",
+        "innerEar": "耳の内側",
+        "manual": "手動",
+        "outlines": "輪郭・目",
+        "paws": "足",
+        "presets": "プリセット",
+        "promptName": "プリセット名",
+        "reset": "リセット",
+        "savePreset": "プリセットとして保存",
+        "shadows": "影",
+        "tummyPaws": "おなか・肉球"
+      },
+      "editor": {
+        "addClip": "クリップを追加",
+        "author": "作者",
+        "authorPlaceholder": "お名前",
+        "back": "戻る",
+        "breathingHint": "呼吸エクササイズ中に使われます。3つすべてを省略すると、代わりに待機の絵が動きます。",
+        "cancel": "キャンセル",
+        "clear": "クリア",
+        "createSuccess": "パックを作成しました",
+        "createTitle": "新規パックを作成",
+        "descPlaceholder": "例: かわいいオレンジの猫、ドット絵のロボット、ふわふわのうさぎなど…",
+        "description": "キャラクターの説明",
+        "duplicateExtraName": "2つのクリップに同じ名前「{{name}}」を付けることはできません — 先にどちらか一方の名前を変更する必要があります",
+        "editTitle": "パックを編集",
+        "flipX": "左右反転",
+        "hint8152": "時々ひとりでに再生されます。好きなものを何でも追加できます — 散歩、気分、手振りなど。",
+        "importFileFailed": "そのファイルをインポートできませんでした",
+        "invalidFile": "無効なファイル",
+        "loadDataFailed": "そのアバターのデータを読み込めませんでした",
+        "missing": "不足: {{slots}}",
+        "name": "名前 *",
+        "namePlaceholder": "マイカスタムアバター",
+        "optional": "任意",
+        "overwrite": "上書き",
+        "remove": "削除",
+        "requiredStates": "必須（待機のみ）",
+        "reservedExtraName": "「{{name}}」は組み込みスロットの名前です — このクリップには別の名前を選ぶ必要があります",
+        "save": "保存",
+        "saveAs": "既存を上書きしますか、それとも新規保存しますか？",
+        "saveFailed": "保存に失敗しました",
+        "saveNew": "新規として保存",
+        "saveSuccess": "パックを保存しました",
+        "saving": "保存中…",
+        "selectFile": "ファイルを選択",
+        "sizeHint": "状態ごとに画像を1枚ドロップしてください — SVG = 静止画、Lottie JSON か PNG スプライトシート = アニメーション（128×128px）。必要なのは待機だけで、それが他のすべての土台になり、アプリが独自の動きを加えます。",
+        "statusHint": "タスクの完了時や失敗時に表示されます。どちらかを省略すると、待機に戻ります。",
+        "unknownAuthor": "不明",
+        "useSameAs": "別の状態と同じアニメーションを使用"
+      },
+      "gallery": {
+        "active": "使用中",
+        "adding": "追加中…",
+        "apply": "適用",
+        "applyFailed": "そのアバターに切り替えられませんでした",
+        "builtIn": "組み込み",
+        "cancel": "キャンセル",
+        "close": "閉じる（Esc）",
+        "custom": "カスタム",
+        "delete": "削除",
+        "deleteConfirm": "外観パック「{{name}}」を削除しますか？この操作は取り消せません。",
+        "deleteFailed": "削除に失敗しました",
+        "dressUp": "着せ替え",
+        "edit": "編集",
+        "export": "エクスポート",
+        "exportFailed": "エクスポートに失敗しました",
+        "exportSuccess": "エクスポートしました",
+        "fanArt": "ペットはコミュニティのファンアートです。",
+        "foundBy": "発見 · {{author}} 作",
+        "importFailed": "インポートに失敗しました",
+        "importFromPetdex": "PetDexからインポート",
+        "importPet": "コンパニオンをインポート",
+        "loadDetailFailed": "そのアバターを読み込めませんでした",
+        "loadPacksFailed": "アバターを読み込めませんでした",
+        "loading": "読み込み中…",
+        "lookingUp": "検索中…",
+        "lookupFailed": "検索に失敗しました",
+        "makeYourOwn": "自分で作る",
+        "manage": "管理",
+        "moreAvatarsOn": "他のアバターはこちら",
+        "noArt": "そのコンパニオンには使える画像がありませんでした",
+        "nowYourPet": "{{name}}があなたのコンパニオンになりました",
+        "petNotFound": "そのコンパニオンが見つかりませんでした",
+        "petdexIntro": "{{link}}からリンクか名前を貼り付けてください — コミュニティが作ったペットの無料ギャラリーです。開いて、好きなものを選び、そのリンクをコピーしてください。",
+        "petdexLinkLabel": "petdex.dev",
+        "petdexPlaceholder": "petdex.dev/pets/boba — または: boba",
+        "saveFailed": "保存に失敗しました",
+        "savePetFailed": "このコンパニオンを保存できませんでした",
+        "spritePackFailed": "そのスプライトパックを作成できませんでした",
+        "states": "状態アニメーション",
+        "switched": "アバターを切り替えました",
+        "tapToUse": "タップして使用",
+        "title": "アバターギャラリー",
+        "useNamed": "{{name}}を使う",
+        "usePet": "このコンパニオンを使う"
+      },
+      "header": {
+        "browser_note": "これはブラウザー表示です。ここに表示される内容はすべてリアルタイムですが、コンパニオン自体は {{productName}} デスクトップアプリに表示されます。",
+        "desktop_tip": "デスクトップ上のコンパニオンをクリックしてそのパネルを開きます。右クリックしてアバターを変更します。",
+        "subtitle": "休憩のリズムを設定し、リマインダーを追加し、コンパニオンが何について告げるかを選択し、一緒に過ごした時間を振り返ります。",
+        "title": "Crew Companion"
+      },
+      "manifest": {
+        "configuration_1": "Kiro Crew Desktop でアプリを有効にし、そのページで休憩間隔と完了通知を設定します。アバターはコンパニオンの Gallery で選択できます。",
+        "description": "Kiro Crewのデスクトップコンパニオン。1日のペースを保つのに役立ちます。休憩を取るように促し、プレーンテキストで設定したリマインダーを保持し、リセットが必要な場合は短い呼吸エクササイズを実行します。セッションが終了した場合、失敗した場合、またはOKが必要な場合も通知します。",
+        "display_name": "Crew Companion",
+        "highlight_1": "優しい休憩の促し — 水を飲む、ストレッチ、目をそらす — あなたが選んだ間隔で",
+        "highlight_2": "プレーンテキストで設定したリマインダー。「20分で水を飲んで」のように",
+        "highlight_3": "必要な時にリセットするための短い呼吸運動",
+        "highlight_4": "セッションが終了した場合、失敗した場合、またはOKが必要な場合に通知します",
+        "highlight_5": "交換可能なアバターを備えたデスクトップに浮かぶ",
+        "page_label": "Crew Companion",
+        "use_case_1": "デスクトップコンパニオンから、休憩の通知、自然言語のリマインダー、呼吸リセット、セッション通知を受け取ります。"
+      },
+      "memories": {
+        "days_together_other": "一緒に過ごした{{count}}日",
+        "dur_hm": "{{h}}時間{{m}}分",
+        "dur_hours": "{{h}}時間",
+        "dur_min": "{{n}}分",
+        "empty": "まだ振り返ることがありません。",
+        "from_last_session": "最後に一緒にいたときから",
+        "loading": "振り返り中…",
+        "offline": "デスクトップアプリを開いてあなたのメモリーを見てください。",
+        "row_breathing_other": "{{name}}と{{count}}回呼吸しました",
+        "row_earliest": "最初の開始: {{time}}",
+        "row_latest": "あなた2人が最後に起きていた時間: {{time}}",
+        "row_reminders_other": "{{count}}個のリマインダーを設定",
+        "row_streak": "{{streak}}日連続",
+        "row_time": "{{time}}あなたに付き添っていました",
+        "title": "メモリーズ"
+      },
+      "menu": {
+        "change_avatar": "アバターを変更",
+        "quit": "コンパニオンをオフにする"
+      },
+      "notif": {
+        "finishedTask": "タスクが完了しました",
+        "jobs_finished": "{{count}}件のジョブが完了しました",
+        "open_session": "セッションを開く",
+        "stoppedNamed": "停止: {{name}}",
+        "taskStopped": "タスクを停止しました"
+      },
+      "offline": {
+        "body": "開いて休憩の促しを変更してリマインダーを設定してください — それらはあなたのMac内のコンパニオンの内部に存在します。",
+        "couldnt_open": "コンパニオンを開けませんでした — {{error}}",
+        "couldnt_turn_off": "コンパニオンをオフにできませんでした — {{error}}",
+        "open": "Crew Companionを開く",
+        "title": "Crew Companionが実行されていません"
+      },
+      "panel": {
+        "add": {
+          "aria": "自分の言葉でリマインダーを追加",
+          "placeholder": "覚えておくことを教えてください…",
+          "submit": "リマインダーを追加"
+        },
+        "ask": {
+          "daily": "毎日",
+          "in1h": "1時間",
+          "tomorrow": "明日",
+          "when": "「{{text}}」はいつ？"
+        },
+        "breakSummary": "約{{mins}}分ごとに休憩",
+        "breathe": {
+          "cta": "呼吸しましょう →",
+          "sub": "1分ほど私がご案内します。",
+          "title": "少し呼吸の休憩をしませんか？"
+        },
+        "close": "閉じる",
+        "confirm": {
+          "daily": "毎日{{time}}に",
+          "error": "それを保存できませんでした。",
+          "every": "{{unit}}ごと",
+          "ok": "わかりました — {{when}}。"
+        },
+        "empty": {
+          "sub": "休憩のときはお知らせします。",
+          "title": "予定なし"
+        },
+        "seeAll": "すべて表示 →",
+        "sessionOff": "タスク通知オフ",
+        "sessionOn": "タスク通知オン",
+        "upNext": "次の予定"
+      },
+      "reminders": {
+        "add_aria": "何についてリマインドしますか？",
+        "add_button": "追加",
+        "add_placeholder": "何を覚えておくべきか教えてください…",
+        "couldnt_add": "そのリマインダーを追加できませんでした — {{error}}",
+        "couldnt_remove": "そのリマインダーを削除できませんでした — {{error}}",
+        "couldnt_reschedule": "スケジュールを変更できませんでした — {{error}}",
+        "couldnt_save": "その設定を保存できませんでした — {{error}}",
+        "couldnt_skip": "それをスキップできませんでした — {{error}}",
+        "default_text": "リマインダー",
+        "edit_aria": "「{{text}}」を編集",
+        "empty": "まだ何もスケジュールされていません。",
+        "loading": "あなたのリマインダーを読み込み中…",
+        "needs_time": "いつかも教えてください — 「20分で水を飲んで」または「1時間ごとに立ってください」のような。",
+        "offline": "リマインダーを更新できませんでした。再試行中…",
+        "remove_aria": "「{{text}}」を削除",
+        "remove_title": "削除",
+        "schedule_daily": "毎日",
+        "schedule_hourly": "毎時",
+        "schedule_minute_aria": "毎時何分",
+        "schedule_once": "1回のみ",
+        "schedule_repeat_aria": "繰り返し",
+        "schedule_time_aria": "時刻",
+        "schedule_title": "スケジュールを変更",
+        "schedule_weekday_aria": "曜日",
+        "schedule_weekly": "毎週",
+        "scheduled_count_other": "{{count}}個予定済み",
+        "skip_title": "次のものだけをスキップ",
+        "tag_done": "完了",
+        "title": "リマインダー"
+      },
+      "settings": {
+        "always_notify_note": "失敗とあなたのOKが待機している場合は常に通知され、これらが何に設定されているかに関係なく。",
+        "break_nudges": "休憩の促し",
+        "break_nudges_hint": "水を飲む、ストレッチ、目をそらす — 約{{mins}}分ごと。",
+        "custom_minutes": "カスタム間隔(分)",
+        "custom_placeholder": "分",
+        "how_often": "頻度",
+        "offline_hint": "デスクトップアプリを開いてこれらを変更してください。",
+        "preset_aria": "{{mins}}分ごとに促してください",
+        "session_done": "セッションが完了したら教えてください",
+        "session_done_hint": "タスク終了時の短い促し。",
+        "title": "設定"
+      },
+      "sprite": {
+        "assignHint": "下の待機・ステータス・ランダムに割り当ててください。割り当てないものは無視されます。",
+        "changeFile": "ファイルを変更",
+        "editTitle": "スプライトパックを編集",
+        "frameHeight": "フレーム高さ",
+        "frameWidth": "フレーム幅",
+        "offsetY": "Yオフセット",
+        "previewDims": "プレビュー（{{w}}×{{h}}px → {{cols}}列 × {{rows}}行）",
+        "row": "{{n}}行目",
+        "rows": "シート内で見つかったアニメーション",
+        "selectFile": "スプライトシートを選択",
+        "title": "＋ スプライトパックを作成"
+      },
+      "state": {
+        "approval_pending": "承認待ち",
+        "done": "完了",
+        "error": "エラー",
+        "groupBreathing": "呼吸",
+        "groupLegacy": "レガシー",
+        "groupRandom": "ランダム",
+        "groupStatus": "ステータス",
+        "hiding": "隠れ中",
+        "idle": "待機",
+        "listening": "聞き取り中",
+        "offline": "オフライン",
+        "peekThinking": "のぞいて考え中",
+        "peeking": "のぞき見",
+        "thinking": "考え中",
+        "walking": "歩行中",
+        "working": "作業中"
+      },
+      "time": {
+        "in_days": "{{n}}日後",
+        "in_h": "{{h}}時間後",
+        "in_hm": "{{h}}時間{{m}}分後",
+        "in_min": "{{n}}分後",
+        "now": "現在",
+        "repeat_daily": "毎日",
+        "repeat_days": "{{n}}日ごと",
+        "repeat_hours": "{{n}}時間ごと",
+        "repeat_minutes": "{{n}}分ごと",
+        "tomorrow": "明日"
+      },
+      "view": {
+        "allTitle": "すべてのリマインダー",
+        "back": "戻る",
+        "breaksHint": "水分補給、ストレッチ、目をそらす。",
+        "breaksLabel": "休憩の促し",
+        "daily": "毎日",
+        "emptyHint": "覚えておきたいことを上に入力してください。",
+        "every": "{{unit}}ごと",
+        "everyCustom": "カスタム間隔（分）",
+        "everyHowOften": "頻度",
+        "everyMinShort": "分",
+        "failed": "この画面を読み込めませんでした。",
+        "loading": "読み込み中…",
+        "notifyNote": "失敗や、あなたの対応を待っているものは、これらの設定に関わらず常に通知されます。",
+        "remove": "リマインダーを削除",
+        "sessionHint": "タスクが終了したときの短い促し。",
+        "sessionLabel": "セッションが完了したら教えてください",
+        "settingsTitle": "設定",
+        "skip": "スキップ"
+      }
+    },
+    "issueRadar": {
+      "views": {
+        "crews": {
+          "desk": {
+            "settings_failed": "保存できませんでした: {{error}}"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "chatInput": {
+      "more_actions": "その他の操作"
+    },
+    "commentOverlay": {
+      "edit": "編集"
+    },
+    "confirmDialog": {
+      "cancel": "キャンセル"
+    }
+  }
+}

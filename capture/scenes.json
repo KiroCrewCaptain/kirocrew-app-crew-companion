@@ -1,0 +1,282 @@
+{
+  "app": "crew-companion",
+  "fixture": "minimal",
+  "locale": "en-US",
+  "timezone": "UTC",
+  "provenance_note": "This repository installed from its own folder into the throwaway home of a Kiro Crew checkout whose built-in Crew Companion was removed, as a release that no longer ships it would be. The desktop windows (the companion with its bubble, the panel and the avatar gallery) are the app's own window pages on the gateway's desktop window route, in Chromium, with a stand-in for the desktop app's window bridge; the desktop app itself was not running.",
+  "data_notes": [
+    "Reminder times are set relative to the moment of the capture, so the panel's 'in N minutes' labels are real.",
+    "The companion's bubble shows a reminder handed to the window the way the hidden notification window hands it over; the reminder itself was added through the app's own API."
+  ],
+  "init_storage": {
+    "mc-nav": "0"
+  },
+  "ready": "text=Set your break rhythm",
+  "forbid_text": [
+    "Loading your reminders",
+    "Couldn’t refresh your reminders"
+  ],
+  "setup": [
+    {
+      "name": "install this repository",
+      "method": "POST",
+      "path": "/api/apps/install",
+      "body": {
+        "source": "{{app_root}}"
+      }
+    },
+    {
+      "name": "trust it (it runs its own code)",
+      "method": "POST",
+      "path": "/api/security/trusted-apps/crew-companion"
+    },
+    {
+      "name": "turn it on",
+      "method": "POST",
+      "path": "/api/apps/crew-companion/enable"
+    },
+    {
+      "name": "the dashboard's privacy notice, as already read",
+      "method": "PUT",
+      "path": "/api/config/theme",
+      "body": {
+        "privacy_acked": true,
+        "privacy_ack_version": 2,
+        "onboarded": true
+      }
+    },
+    {
+      "name": "retire the host's one-time startup intro",
+      "method": "POST",
+      "path": "/api/feature-videos/feedback",
+      "body": {
+        "id": "crewmates",
+        "status": "dismissed"
+      },
+      "optional": true
+    },
+    {
+      "name": "turn off the host's feature tips",
+      "method": "POST",
+      "path": "/api/tips/feedback",
+      "body": {
+        "id": "",
+        "action": "optout"
+      },
+      "optional": true
+    },
+    {
+      "name": "break rhythm and the companion's spot",
+      "method": "POST",
+      "path": "/api/apps/crew-companion/reminders/config",
+      "body": {
+        "breakReminderMins": 45,
+        "sessionNotificationsEnabled": true,
+        "petX": 300,
+        "petY": 260
+      }
+    },
+    {
+      "name": "a reminder in plain words",
+      "method": "POST",
+      "path": "/api/apps/crew-companion/reminders/add",
+      "body": {
+        "text": "Drink a glass of water",
+        "fireAt": "{{in_20m}}"
+      }
+    },
+    {
+      "name": "a recurring one",
+      "method": "POST",
+      "path": "/api/apps/crew-companion/reminders/add",
+      "body": {
+        "text": "Stand up and stretch",
+        "fireAt": "{{in_60m}}",
+        "everyMinutes": 60
+      }
+    },
+    {
+      "name": "a later one",
+      "method": "POST",
+      "path": "/api/apps/crew-companion/reminders/add",
+      "body": {
+        "text": "Call the dentist back",
+        "fireAt": "{{in_180m}}"
+      }
+    },
+    {
+      "name": "a breathing break",
+      "method": "POST",
+      "path": "/api/apps/crew-companion/breathing-done"
+    },
+    {
+      "name": "a custom avatar, made with Make your own",
+      "method": "POST",
+      "path": "/api/apps/crew-companion/appearances/save",
+      "body": {
+        "id": "sprout",
+        "manifest": {
+          "meta": {
+            "id": "sprout",
+            "name": "Sprout",
+            "author": "Demo"
+          },
+          "states": {
+            "idle": "idle.svg"
+          }
+        },
+        "files": {
+          "idle.svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 128 128\"><path d=\"M64 14c-25 0-40 19-40 44v52l10-8 10 8 10-8 10 8 10-8 10 8 10-8V58c0-25-15-44-40-44z\" fill=\"#d9f99d\" stroke=\"#365314\" stroke-width=\"5\" stroke-linejoin=\"round\"/><circle cx=\"50\" cy=\"60\" r=\"6\" fill=\"#1a2e05\"/><circle cx=\"78\" cy=\"60\" r=\"6\" fill=\"#1a2e05\"/><path d=\"M64 14c4-8 12-10 18-8-2 7-9 11-18 8z\" fill=\"#65a30d\"/></svg>"
+        }
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "hero",
+      "path": "/apps/crew-companion",
+      "alt": "The Crew Companion page in Kiro Crew: break nudges every 45 minutes, three upcoming reminders written in plain words, and the memories card.",
+      "ready": "text=Drink a glass of water"
+    },
+    {
+      "name": "use-case-breaks",
+      "path": "/apps/crew-companion",
+      "themes": [
+        "light"
+      ],
+      "alt": "The Settings card on the Crew Companion page: break nudges switched on with 45 minutes chosen, and session notifications switched on.",
+      "ready": "text=Break nudges",
+      "clip": "section:has-text('Settings')"
+    },
+    {
+      "name": "use-case-reminders",
+      "path": "/popout/desktop/crew-companion/panel",
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "alt": "The companion's panel on the desktop: an Up next list with Drink a glass of water in 20 minutes, Stand up and stretch every hour, and Call the dentist back, above a box for a new reminder.",
+      "ready": "text=Drink a glass of water",
+      "desktop_window": {
+        "window": "panel",
+        "kind": "panel",
+        "viewport": {
+          "width": 384,
+          "height": 404
+        }
+      }
+    },
+    {
+      "name": "use-case-avatar",
+      "path": "/popout/desktop/crew-companion/gallery",
+      "themes": [
+        "light"
+      ],
+      "alt": "The avatar gallery window: the built-in Kiro ghost, which is active, next to a custom avatar called Sprout, with Import from PetDex and Make your own at the top.",
+      "ready": "text=Sprout",
+      "desktop_window": {
+        "window": "gallery",
+        "kind": "panel",
+        "viewport": {
+          "width": 808,
+          "height": 608
+        }
+      }
+    },
+    {
+      "name": "companion-bubble",
+      "path": "/popout/desktop/crew-companion/pet",
+      "themes": [
+        "light"
+      ],
+      "alt": "The companion floating on the desktop with a speech bubble saying Drink a glass of water.",
+      "ready": "text=Drink a glass of water",
+      "settle_ms": 1500,
+      "desktop_window": {
+        "window": "pet",
+        "kind": "overlay",
+        "messages": [
+          {
+            "from": "notifier",
+            "message": {
+              "cc": "bubble",
+              "bubble": {
+                "seq": -1,
+                "kind": "reminder",
+                "text": "Drink a glass of water"
+              },
+              "slot": null,
+              "seq": -1,
+              "react": false
+            }
+          }
+        ]
+      },
+      "clip_box": {
+        "x": 120,
+        "y": 120,
+        "width": 520,
+        "height": 320
+      }
+    }
+  ],
+  "walkthrough": {
+    "name": "walkthrough",
+    "path": "/apps/crew-companion",
+    "theme": "light",
+    "alt": "A walkthrough of the Crew Companion page: typing stretch my legs in 15 minutes into the reminder box adds it to the list as 15 min from now, then the break rhythm is changed from 45 to 30 minutes.",
+    "steps": [
+      {
+        "wait_for": "text=Drink a glass of water"
+      },
+      {
+        "caption": "Crew Companion: breaks, reminders and memories on one page",
+        "position": "bottom"
+      },
+      {
+        "wait_ms": 2200
+      },
+      {
+        "caption": "Write a reminder the way you would say it",
+        "position": "bottom"
+      },
+      {
+        "type": "input[aria-label='What should I remind you about?']",
+        "value": "stretch my legs in 15 minutes",
+        "delay_ms": 60
+      },
+      {
+        "wait_ms": 900
+      },
+      {
+        "press": "input[aria-label='What should I remind you about?']",
+        "key": "Enter"
+      },
+      {
+        "wait_for": "text=stretch my legs"
+      },
+      {
+        "caption": "It is in the list, 15 minutes from now",
+        "position": "bottom"
+      },
+      {
+        "wait_ms": 2200
+      },
+      {
+        "caption": "Choose how often it nudges you to take a break",
+        "position": "bottom"
+      },
+      {
+        "click": "role=radio[name='Nudge me every 30 minutes']"
+      },
+      {
+        "wait_ms": 2400
+      },
+      {
+        "caption": "",
+        "position": "bottom"
+      }
+    ],
+    "tail_ms": 2500
+  }
+}

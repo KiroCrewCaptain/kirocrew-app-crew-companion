@@ -33,6 +33,7 @@ Chromium build, and an ``ffmpeg`` binary. See ``capture/README.md``.
 from __future__ import annotations
 
 import argparse
+import datetime
 import contextlib
 import json
 import os
@@ -234,6 +235,15 @@ def load_scenes(path: Path) -> dict[str, Any]:
     return scenes
 
 
+def relative_time(name: str) -> str | None:
+    """``in_<N>m``: an ISO UTC time N minutes after now, for data an app schedules."""
+    match = re.fullmatch(r"in_(\d+)m", name)
+    if not match:
+        return None
+    moment = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=int(match.group(1)))
+    return moment.replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
 def substitute(value: Any, variables: dict[str, Any]) -> Any:
     """Replace ``{{name}}`` in every string of ``value`` with ``variables[name]``."""
     if isinstance(value, str):
@@ -244,6 +254,9 @@ def substitute(value: Any, variables: dict[str, Any]) -> Any:
         def repl(match: re.Match[str]) -> str:
             name = match.group(1)
             if name not in variables:
+                relative = relative_time(name)
+                if relative is not None:
+                    return relative
                 raise CaptureError(f"unknown variable {{{{{name}}}}}")
             return str(variables[name])
 
@@ -858,7 +871,9 @@ def assert_clean(page: Any, forbidden: list[str], where: str) -> None:
 
 
 def write_png(ffmpeg_bin: str, raw: Path, out: Path) -> tuple[int, int, int]:
-    for width in PNG_WIDTHS:
+    # Never wider than the capture itself: a small window is kept sharp, not blown up.
+    native, _ = png_size(raw)
+    for width in sorted({min(w, native) for w in PNG_WIDTHS}, reverse=True):
         ffmpeg(
             ffmpeg_bin, "-i", str(raw), "-vf", f"scale={width}:-1:flags=lanczos",
             "-compression_level", "9", str(out),
@@ -968,6 +983,53 @@ def _no_usage_reading(route: Any) -> None:
                   body=json.dumps({"usage": {"available": False}}))
 
 
+# A desktop window the Kiro Crew desktop shell hosts for the app
+# (`desktop.windows` in app.json) loads the dashboard's
+# `/popout/desktop/<app>/<window>` document and talks to the shell through
+# `window.kirocrewDesktopWindow`. A browser has no shell, so a shot with
+# `"desktop_window"` gets a stand-in bridge: it answers the page the way the
+# shell does for one window (this copy hosts the avatar, a panel opened beside
+# it on the right) and hands the page the messages the shot lists, as if another
+# of the app's windows had sent them. It reaches nothing outside the page. The
+# window is transparent, so the picture is taken with a transparent background:
+# what the window draws over the desktop, and nothing else.
+DESKTOP_BRIDGE_SCRIPT = r"""
+(() => {
+  const spec = %s;
+  const listeners = {};
+  const on = (ch) => (cb) => { (listeners[ch] = listeners[ch] || new Set()).add(cb); return () => listeners[ch].delete(cb) };
+  const emit = (ch, ...args) => { for (const cb of [...(listeners[ch] || [])]) cb(...args) };
+  const noop = () => {};
+  const ready = () => {
+    setTimeout(() => {
+      if (spec.kind === 'overlay') emit('active', { active: true });
+      if (spec.kind === 'panel') emit('placed', { side: 'right' });
+      for (const m of spec.messages || []) emit('message', m.from, m.message);
+    }, 50);
+  };
+  window.kirocrewDesktopWindow = Object.freeze({
+    level: 2, app: spec.app, window: spec.window, kind: spec.kind, capabilities: [],
+    ready, close: noop, closeAll: noop, open: noop, setHitRegions: noop, setFocusable: noop,
+    onShortcut: on('shortcut'), send: noop, broadcast: noop, onMessage: on('message'),
+    onWindowChange: on('windowChange'), onPlaced: on('placed'), onActive: on('active'),
+    beginDrag: noop, endDrag: noop, onDrag: on('drag'),
+    showSession: async () => false, openExternal: noop,
+  });
+})();
+"""
+
+
+def desktop_page(context: Any, scenes: dict[str, Any], shot: dict[str, Any]) -> Any:
+    """A page carrying the stand-in shell bridge for *shot*'s desktop window."""
+    spec = dict(shot["desktop_window"])
+    spec.setdefault("app", scenes["app"])
+    page = context.new_page()
+    page.add_init_script(DESKTOP_BRIDGE_SCRIPT % json.dumps(spec))
+    if spec.get("viewport"):
+        page.set_viewport_size(spec["viewport"])
+    return page
+
+
 def capture_screenshots(
     browser: Any, gateway: Gateway, scenes: dict[str, Any], variables: dict[str, Any],
     out_dir: Path, scratch: Path, ffmpeg_bin: str, only: set[str] | None,
@@ -988,28 +1050,46 @@ def capture_screenshots(
             apply_theme(page, scenes, theme)
             for shot in shots:
                 where = f"{shot['name']} ({theme})"
-                page.goto(gateway.base_url + substitute(shot["path"], variables), wait_until="load")
-                settle(page, shot.get("ready") or scenes.get("ready"), 400)
-                run_steps(page, shot.get("steps", []), variables, animate=False)
-                page.mouse.move(VIEWPORT["width"] - 4, VIEWPORT["height"] - 4)
-                settle(page, shot.get("ready_after"), int(shot.get("settle_ms", 700)),
-                       settle_hidden(scenes, shot), where)
-                assert_clean(page, forbidden + list(shot.get("forbid_text", [])), where)
-                raw = scratch / f"{shot['name']}-{theme}.raw.png"
-                if shot.get("clip"):
-                    locate(page, shot["clip"]).screenshot(path=str(raw), animations="disabled")
-                else:
-                    page.screenshot(path=str(raw), animations="disabled")
-                out = out_dir / f"{shot['name']}-{theme}.png"
-                width, height, size = write_png(ffmpeg_bin, raw, out)
-                written.append({
-                    "file": out.name, "name": shot["name"], "theme": theme, "bytes": size,
-                    "width": width, "height": height, "alt": shot["alt"],
-                })
-                log(f"screenshot {out.name}: {width}x{height}, {size} bytes")
+                shot_page = desktop_page(context, scenes, shot) if shot.get("desktop_window") else page
+                captured = _capture_one(shot_page, gateway, scenes, shot, variables, theme, where,
+                                        forbidden, scratch, out_dir, ffmpeg_bin)
+                if shot_page is not page:
+                    shot_page.close()
+                written.append(captured)
         finally:
             context.close()
     return written
+
+
+def _capture_one(
+    page: Any, gateway: Gateway, scenes: dict[str, Any], shot: dict[str, Any],
+    variables: dict[str, Any], theme: str, where: str, forbidden: list[str],
+    scratch: Path, out_dir: Path, ffmpeg_bin: str,
+) -> dict[str, Any]:
+    page.goto(gateway.base_url + substitute(shot["path"], variables), wait_until="load")
+    settle(page, shot.get("ready") or scenes.get("ready"), 400)
+    run_steps(page, shot.get("steps", []), variables, animate=False)
+    page.mouse.move(VIEWPORT["width"] - 4, VIEWPORT["height"] - 4)
+    settle(page, shot.get("ready_after"), int(shot.get("settle_ms", 700)),
+           settle_hidden(scenes, shot), where)
+    assert_clean(page, forbidden + list(shot.get("forbid_text", [])), where)
+    raw = scratch / f"{shot['name']}-{theme}.raw.png"
+    transparent = bool(shot.get("desktop_window"))
+    if shot.get("clip"):
+        locate(page, shot["clip"]).screenshot(
+            path=str(raw), animations="disabled", omit_background=transparent)
+    elif shot.get("clip_box"):
+        page.screenshot(path=str(raw), animations="disabled", clip=shot["clip_box"],
+                        omit_background=transparent)
+    else:
+        page.screenshot(path=str(raw), animations="disabled", omit_background=transparent)
+    out = out_dir / f"{shot['name']}-{theme}.png"
+    width, height, size = write_png(ffmpeg_bin, raw, out)
+    log(f"screenshot {out.name}: {width}x{height}, {size} bytes")
+    return {
+        "file": out.name, "name": shot["name"], "theme": theme, "bytes": size,
+        "width": width, "height": height, "alt": shot["alt"],
+    }
 
 
 def capture_walkthrough(

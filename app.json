@@ -1,0 +1,243 @@
+{
+  "name": "crew-companion",
+  "version": "1.0.0",
+  "displayName": "Crew Companion",
+  "description": "A desktop companion for Kiro Crew that helps you pace your day: it nudges you to take breaks, holds the reminders you set in plain language, and runs a short breathing exercise when you need to reset. It also lets you know when a session finishes, fails, or needs your OK.",
+  "author": "kirocrew",
+  "license": "Apache-2.0",
+  "minKiroCrewVersion": "0.13.0",
+  "defaultEnabled": false,
+  "highlights": [
+    "Gentle break nudges — water, stretch, look away — on an interval you choose",
+    "Reminders you set in plain language, like “drink water in 20 minutes”",
+    "A short breathing exercise to reset when you need it",
+    "Tells you when a session finishes, fails, or needs your OK",
+    "Floats on your desktop with a swappable avatar"
+  ],
+  "backend": {
+    "hooks": {
+      "routes": "backend.routes:register_routes",
+      "on_startup": "backend.hooks:on_startup",
+      "on_shutdown": "backend.hooks:on_shutdown"
+    }
+  },
+  "platform": {
+    "os": [
+      "macos",
+      "linux",
+      "windows"
+    ],
+    "requiresDesktopApp": true
+  },
+  "ui": {
+    "entry": "dist/index.mjs",
+    "pages": [
+      {
+        "route": "/apps/crew-companion",
+        "label": "Crew Companion"
+      }
+    ]
+  },
+  "desktop": {
+    "windows": [
+      {
+        "id": "pet",
+        "entry": "dist/pet.mjs",
+        "kind": "overlay",
+        "displays": "all",
+        "openOnEnable": true
+      },
+      {
+        "id": "notifier",
+        "entry": "dist/notifier.mjs",
+        "kind": "background",
+        "openOnEnable": true
+      },
+      {
+        "id": "panel",
+        "entry": "dist/panel.mjs",
+        "kind": "panel",
+        "width": 384,
+        "height": 404,
+        "position": "bottom-right",
+        "transparent": true,
+        "gutter": 32
+      },
+      {
+        "id": "gallery",
+        "entry": "dist/gallery.mjs",
+        "kind": "panel",
+        "width": 808,
+        "height": 608,
+        "position": "center",
+        "transparent": true,
+        "gutter": 24
+      }
+    ]
+  },
+  "permissions": {
+    "api": [
+      "/api/apps/crew-companion",
+      "/api/apps/crew-companion/*"
+    ],
+    "storage": true,
+    "cron": false,
+    "network": true,
+    "events": [
+      "crew-companion:fire"
+    ]
+  },
+  "tags": [
+    "companion",
+    "desktop-companion",
+    "reminders",
+    "breaks",
+    "wellbeing"
+  ],
+  "iconPath": "assets/icon.png",
+  "heroImage": "assets/hero-light.png",
+  "heroImageDark": "assets/hero-dark.png",
+  "useCases": [
+    "Use a desktop companion for break nudges, plain-language reminders, breathing resets, and session notifications."
+  ],
+  "configuration": [
+    "Use Kiro Crew Desktop, enable the app, then set the break interval and completion notifications on its page; avatar choices live in the companion Gallery."
+  ],
+  "screenshots": [
+    "assets/screenshot-main.png"
+  ],
+  "l10n": {
+    "bn": {
+      "displayName": "Crew Companion",
+      "description": "Kiro Crew-এর একটি ডেস্কটপ সঙ্গী, যা তোমার দিনটা মাপে রাখতে সাহায্য করে: বিরতি নিতে মনে করিয়ে দেয়, সহজ ভাষায় দেওয়া রিমাইন্ডার ধরে রাখে, আর একটু জিরিয়ে নেওয়ার দরকার হলে ছোট একটি শ্বাসের অভ্যাস চালায়। কোনো সেশন শেষ হলে, ব্যর্থ হলে বা তোমার সম্মতি লাগলে সেটাও জানিয়ে দেয়।",
+      "pageLabel": "Crew Companion",
+      "highlights": [
+        "নরম বিরতির ইশারা — পানি, একটু হাত-পা ছড়ানো, চোখ সরানো — তুমি যে সময়ের বিরতি বেছে নাও",
+        "সহজ ভাষায় দেওয়া রিমাইন্ডার, যেমন “20 মিনিট পরে পানি খাও”",
+        "দরকার হলে জিরিয়ে নিতে ছোট একটি শ্বাসের অভ্যাস",
+        "কোনো সেশন শেষ হলে, ব্যর্থ হলে বা তোমার সম্মতি লাগলে জানিয়ে দেয়",
+        "বদলে নেওয়ার মতো অ্যাভাটার নিয়ে তোমার ডেস্কটপে ভেসে থাকে"
+      ]
+    },
+    "de": {
+      "displayName": "Crew Companion",
+      "description": "Ein Desktop-Begleiter für Kiro Crew, der dir hilft, dein Tempo zu halten: Er erinnert dich an Pausen, verwaltet die Erinnerungen, die du in normaler Sprache setzt, und führt eine kurze Atemübung durch, wenn du abschalten musst. Außerdem sagt er dir, wenn eine Sitzung endet, fehlschlägt oder deine Zustimmung braucht.",
+      "pageLabel": "Crew Companion",
+      "highlights": [
+        "Sanfte Pausenhinweise — trinken, strecken, wegschauen — in einem Intervall, das du wählst",
+        "Erinnerungen, die du in normaler Sprache setzt, etwa „in 20 Minuten Wasser trinken“",
+        "Eine kurze Atemübung zum Abschalten, wenn du sie brauchst",
+        "Sagt dir, wenn eine Sitzung endet, fehlschlägt oder deine Zustimmung braucht",
+        "Schwebt auf deinem Desktop, mit austauschbarem Avatar"
+      ]
+    },
+    "es": {
+      "displayName": "Crew Companion",
+      "description": "Un acompañante de escritorio para Kiro Crew que te ayuda a marcar el ritmo de tu día: te recuerda tomar descansos, guarda los recordatorios que creas en lenguaje natural y hace un ejercicio corto de respiración cuando necesitas despejarte. También te avisa cuando una sesión termina, falla o necesita tu aprobación.",
+      "pageLabel": "Crew Companion",
+      "highlights": [
+        "Avisos suaves para descansar — agua, estirarse, mirar a lo lejos — en el intervalo que elijas",
+        "Recordatorios que creas en lenguaje natural, como \"toma agua en 20 minutos\"",
+        "Un ejercicio corto de respiración para despejarte cuando lo necesitas",
+        "Te avisa cuando una sesión termina, falla o necesita tu aprobación",
+        "Flota en tu escritorio con un avatar intercambiable"
+      ]
+    },
+    "fr": {
+      "displayName": "Crew Companion",
+      "description": "Un compagnon de bureau pour Kiro Crew qui t’aide à rythmer ta journée : il t’invite à faire des pauses, garde les rappels que tu formules en langage courant et propose un court exercice de respiration quand tu as besoin de souffler. Il te signale aussi quand une session se termine, échoue ou attend ton accord.",
+      "pageLabel": "Crew Companion",
+      "highlights": [
+        "De légers rappels de pause — boire, s’étirer, regarder au loin — à l’intervalle que tu choisis",
+        "Des rappels que tu formules en langage courant, comme « bois de l’eau dans 20 minutes »",
+        "Un court exercice de respiration pour souffler quand tu en as besoin",
+        "Te signale quand une session se termine, échoue ou attend ton accord",
+        "Flotte sur ton bureau avec un avatar interchangeable"
+      ]
+    },
+    "hi": {
+      "displayName": "Crew Companion",
+      "description": "Kiro Crew का एक डेस्कटॉप साथी जो तुम्हारे दिन की रफ़्तार सँभालने में मदद करता है: यह ब्रेक लेने की याद दिलाता है, आम बोलचाल में सेट किए गए रिमाइंडर रखता है, और रीसेट होने की ज़रूरत पर छोटी साँस की कसरत चलाता है। साथ ही बताता है कि कोई सेशन कब पूरा होता है, फ़ेल होता है, या तुम्हारी हामी चाहता है।",
+      "pageLabel": "Crew Companion",
+      "highlights": [
+        "हल्के ब्रेक रिमाइंडर — पानी, स्ट्रेच, नज़र हटाना — तुम्हारे चुने अंतराल पर",
+        "आम बोलचाल में सेट किए गए रिमाइंडर, जैसे \"20 मिनट में पानी पीना\"",
+        "ज़रूरत पड़ने पर रीसेट होने के लिए छोटी साँस की कसरत",
+        "बताता है कि कोई सेशन कब पूरा होता है, फ़ेल होता है, या तुम्हारी हामी चाहता है",
+        "बदले जा सकने वाले अवतार के साथ तुम्हारे डेस्कटॉप पर तैरता है"
+      ]
+    },
+    "it": {
+      "displayName": "Crew Companion",
+      "description": "Un compagno da scrivania per Kiro Crew che ti aiuta a dare ritmo alla giornata: ti invita a fare pause, conserva i promemoria che imposti in linguaggio naturale e propone un breve esercizio di respirazione quando hai bisogno di ricaricarti. Ti avvisa anche quando una sessione finisce, va in errore o attende un tuo OK.",
+      "pageLabel": "Crew Companion",
+      "highlights": [
+        "Inviti gentili a fare una pausa — bere, allungarsi, guardare lontano — con l’intervallo che scegli tu",
+        "Promemoria che imposti in linguaggio naturale, come «bere acqua tra 20 minuti»",
+        "Un breve esercizio di respirazione per ricaricarti quando ne hai bisogno",
+        "Ti dice quando una sessione finisce, va in errore o attende un tuo OK",
+        "Galleggia sulla scrivania con un avatar sostituibile"
+      ]
+    },
+    "ja": {
+      "displayName": "Crew Companion",
+      "description": "Kiro Crewのデスクトップコンパニオン。1日のペースを保つのに役立ちます。休憩を取るように促し、プレーンテキストで設定したリマインダーを保持し、リセットが必要な場合は短い呼吸エクササイズを実行します。セッションが終了した場合、失敗した場合、またはOKが必要な場合も通知します。",
+      "pageLabel": "Crew Companion",
+      "highlights": [
+        "優しい休憩の促し — 水を飲む、ストレッチ、目をそらす — あなたが選んだ間隔で",
+        "プレーンテキストで設定したリマインダー。「20分で水を飲んで」のように",
+        "必要な時にリセットするための短い呼吸運動",
+        "セッションが終了した場合、失敗した場合、またはOKが必要な場合に通知します",
+        "交換可能なアバターを備えたデスクトップに浮かぶ"
+      ]
+    },
+    "ko": {
+      "displayName": "Crew Companion",
+      "description": "하루의 속도를 조절하도록 돕는 Kiro Crew의 데스크톱 컴패니언입니다. 휴식을 권하고, 일상적인 말로 설정한 리마인더를 기억하며, 재충전이 필요할 때 짧은 호흡 운동을 진행합니다. 세션이 끝나거나 실패하거나 승인이 필요할 때도 알려 줍니다.",
+      "pageLabel": "Crew Companion",
+      "highlights": [
+        "물 마시기·스트레칭·먼 곳 보기 등 부드러운 휴식 알림을 원하는 간격으로",
+        "‘20분 뒤에 물 마시기’처럼 일상적인 말로 설정하는 리마인더",
+        "필요할 때 재충전할 수 있는 짧은 호흡 운동",
+        "세션이 끝나거나 실패하거나 승인이 필요할 때 알려 줍니다",
+        "교체 가능한 아바타로 데스크톱 위에 떠 있습니다"
+      ]
+    },
+    "pt": {
+      "displayName": "Crew Companion",
+      "description": "Um companheiro de desktop para o Kiro Crew que ajuda você a dosar o seu dia: ele lembra você de fazer pausas, guarda os lembretes que você define em linguagem simples e conduz um exercício curto de respiração quando você precisa se recompor. Também avisa quando uma sessão termina, falha ou precisa do seu OK.",
+      "pageLabel": "Crew Companion",
+      "highlights": [
+        "Lembretes leves de pausa — beber água, se alongar, olhar para longe — no intervalo que você escolher",
+        "Lembretes que você define em linguagem simples, como “beber água em 20 minutos”",
+        "Um exercício curto de respiração para se recompor quando precisar",
+        "Avisa quando uma sessão termina, falha ou precisa do seu OK",
+        "Flutua na sua área de trabalho com um avatar que você pode trocar"
+      ]
+    },
+    "ru": {
+      "displayName": "Crew Companion",
+      "description": "Настольный компаньон для Kiro Crew, который помогает распределить день: напоминает о перерывах, хранит напоминания, заданные обычными словами, и проводит короткое дыхательное упражнение, когда нужно передохнуть. Ещё он сообщает, когда сессия завершилась, упала или ждёт твоего согласия.",
+      "pageLabel": "Crew Companion",
+      "highlights": [
+        "Мягкие напоминания о перерыве — вода, разминка, взгляд в сторону — с выбранным тобой интервалом",
+        "Напоминания обычными словами, например «выпей воды через 20 минут»",
+        "Короткое дыхательное упражнение, чтобы перезагрузиться, когда это нужно",
+        "Сообщает, когда сессия завершилась, упала или ждёт твоего согласия",
+        "Висит поверх рабочего стола, аватар можно заменить"
+      ]
+    },
+    "zh-CN": {
+      "displayName": "Crew Companion",
+      "description": "Kiro Crew 的桌面伙伴，帮你把一天过得有节奏。它会提醒你休息，记住你用自然语言设的提醒，在你需要放松时带你做一段简短呼吸练习。会话完成、失败或需要你确认时，它也会告诉你。",
+      "pageLabel": "Crew Companion",
+      "highlights": [
+        "轻声提醒你休息 — 喝水、伸展、远眺 — 间隔由你设定",
+        "用自然语言设置提醒，比如“20 分钟后喝水”",
+        "需要放松时做一段简短的呼吸练习",
+        "会话完成、失败或需要你确认时会告诉你",
+        "浮在桌面上，形象可随时更换"
+      ]
+    }
+  }
+}
