@@ -22,7 +22,7 @@ from aiohttp import web
 from aiohttp.test_utils import TestClient, TestServer
 from fakehost import OWNER, FakeAppearanceStore, FakeCtx
 
-from backend import hooks, routes
+from backend import hooks, routes, runtime
 from backend.reminders import parse_iso, to_iso
 from backend.store import CompanionStore
 
@@ -40,7 +40,7 @@ def enabled():
 def store(tmp_path, monkeypatch):
     s = CompanionStore(tmp_path, rand=lambda: 0.0, now=lambda: NOW)
     s.load()
-    monkeypatch.setattr(hooks, "_store", s)
+    monkeypatch.setattr(runtime, "store", s)
     return s
 
 
@@ -106,7 +106,7 @@ class TestGate:
     ):
         """'Not up yet' is a different answer from 'broken', and only one of them
         is worth retrying — so the runtime being absent must not read as a crash."""
-        monkeypatch.setattr(hooks, "_store", None)
+        monkeypatch.setattr(runtime, "store", None)
         client = await _client()
         try:
             r = await client.get(f"{BASE}/reminders")
@@ -135,7 +135,7 @@ class TestGate:
     @pytest.mark.asyncio
     async def test_every_route_is_gated(self, monkeypatch):
         """A route added without the runtime gate is the hole this pins shut."""
-        monkeypatch.setattr(hooks, "_store", None)
+        monkeypatch.setattr(runtime, "store", None)
         client = await _client()
         try:
             for method, path in EVERY_ROUTE:
@@ -196,7 +196,7 @@ def gated(enabled, store, tmp_path, monkeypatch, fake_host):
     """An enabled, started companion with no network and a recorded petdex call."""
     appearances = FakeAppearanceStore(tmp_path)
     appearances.load()
-    monkeypatch.setattr(hooks, "_appearances", appearances)
+    monkeypatch.setattr(runtime, "appearances", appearances)
     calls = fake_host.transfer.calls
 
     def petdex_calls():

@@ -29,7 +29,7 @@ from aiohttp import web
 
 from . import _host
 from ._host import Route
-from .hooks import appearances_ready, get_appearances, get_store
+from .runtime import appearances_ready, get_appearances, get_store
 
 logger = logging.getLogger(__name__)
 

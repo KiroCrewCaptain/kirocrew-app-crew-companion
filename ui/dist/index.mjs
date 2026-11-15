@@ -1,7 +1,7 @@
 import { C as appFetch, E as i18nT, S as WINDOW_PATH, T as currentLocale, f as DISABLE_PATH, g as POLL_MS, l as BREAK_PRESETS, p as ENABLE_PATH, v as REMINDERS_PATH, w as setTransport, x as STATS_PATH } from "./chunks/constants-De1Fjrra.mjs";
 import { a as labelFor, c as sortedReminders, i as clampBreakMins, n as RadioChipGroup, o as localMidnight, r as radioChip, s as repeatLabel, t as parseReminder } from "./chunks/reminderParse-CJkDpEbU.mjs";
 import { n as errorText, t as Select } from "./chunks/Select-DskXH9SX.mjs";
-import { a as fmtWeekday } from "./chunks/format-DYyEE5ak.mjs";
+import { a as fmtWeekday } from "./chunks/format-B9AOzdKC.mjs";
 import { useAppApi, useImeGuard, useLanguageGeneration } from "@kirocrew/app-sdk";
 import * as React$1 from "react";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";

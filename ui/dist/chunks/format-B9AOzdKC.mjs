@@ -7,6 +7,7 @@ import { activeLocale, fmtNumber, fmtTime } from "@kirocrew/app-sdk";
 * host's active language, `localeMatcher: 'lookup'`, and a dash for a value that
 * cannot be shown. The SDK's `fmtNumber` and `activeLocale` are the host's own.
 */
+/** What the dashboard shows for a value it cannot format (U+2014). */
 var NO_VALUE = "—";
 /** A millisecond timestamp below this is read as seconds, as the dashboard does. */
 var SECONDS_CEILING = 1e11;

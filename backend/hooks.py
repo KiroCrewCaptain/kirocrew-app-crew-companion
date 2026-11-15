@@ -21,44 +21,17 @@ import logging
 from pathlib import Path
 from typing import Any
 
-from . import _host
+from . import _host, runtime
 from .store import CompanionStore
 
 logger = logging.getLogger(__name__)
 
-#: Process-wide runtime. A module global rather than something hung off ``ctx``
-#: because the routes need to reach the same instance, and the dispatcher hands
-#: each hook its own context object.
-_store: CompanionStore | None = None
-_appearances: Any | None = None
-
-
-def get_appearances() -> Any:
-    """The appearance store.
-
-    Unlike the reminder store this is created eagerly on first use rather than by the
-    startup hook: listing packs is a pure read of a directory, so there is nothing to
-    schedule and nothing to tear down — and a gallery that works before the first tick
-    is one less ordering dependency.
-    """
-    if _appearances is None:
-        raise RuntimeError("crew-companion: appearance store not initialised")
-    return _appearances
-
-
-def appearances_ready() -> bool:
-    """True once the appearance store exists (the host ships its library)."""
-    return _appearances is not None
-
-
-def get_store() -> CompanionStore | None:
-    """The live runtime, or None when the app is disabled or not yet started.
-
-    Routes use this to answer 503 rather than 500 while the hook has not run —
-    "not started yet" and "broken" are different answers and the caller can
-    retry only one of them.
-    """
-    return _store
+# The runtime lives in ``runtime.py``: the gateway executes this file into a fresh
+# module for each hook it calls, so a global here would not be the one the routes
+# read. These names are kept for the callers and tests that used them.
+get_appearances = runtime.get_appearances
+appearances_ready = runtime.appearances_ready
+get_store = runtime.get_store
 
 
 async def on_startup(ctx: Any) -> None:
@@ -68,26 +41,24 @@ async def on_startup(ctx: Any) -> None:
     enabling the app never blocks the gateway on file I/O, the same reason the
     reference builtin's hook is async.
     """
-    global _store, _appearances
-
     data_dir = Path(ctx.data_dir)
 
     # Before the early return below: shutdown clears this, so a disable-then-enable
     # cycle would otherwise leave the gallery with no store and every appearance
     # request raising. It holds no timer, so rebuilding it is free.
-    if _appearances is None and _host.appearances_available():
+    if runtime.appearances is None and _host.appearances_available():
         appearances = _host.appearance_store(data_dir)
         await asyncio.to_thread(appearances.load)
-        _appearances = appearances
+        runtime.appearances = appearances
 
-    if _store is not None:
+    if runtime.store is not None:
         # Re-enable after a disable: the same instance resumes rather than
         # building a second one that would double-fire every reminder. A store
         # whose file could not be read reads it again first, so re-enabling is
         # how a person recovers once the file is readable.
-        if _store.write_blocked:
-            await asyncio.to_thread(_store.load)
-        _store.start()
+        if runtime.store.write_blocked:
+            await asyncio.to_thread(runtime.store.load)
+        runtime.store.start()
         return
 
     """
@@ -116,7 +87,7 @@ async def on_startup(ctx: Any) -> None:
     store = CompanionStore(data_dir, on_fire=announce_fire)
     await asyncio.to_thread(store.load)
     store.start()
-    _store = store
+    runtime.store = store
     logger.info("crew-companion: runtime started (data dir %s)", data_dir)
 
 
@@ -127,17 +98,11 @@ async def on_shutdown(ctx: Any) -> None:  # noqa: ARG001 — ctx unused, kept fo
     by an enable resumes with the accumulated stats and the in-flight break
     schedule instead of starting from zero.
     """
-    if _store is not None:
-        await asyncio.to_thread(_store.stop)
+    if runtime.store is not None:
+        await asyncio.to_thread(runtime.store.stop)
         logger.info("crew-companion: runtime stopped")
 
 
 def _reset_for_tests() -> None:
     """Drop the process-global runtime. Tests only."""
-    global _store, _appearances
-    if _store is not None:
-        _store.stop()
-    _store = None
-    # The appearance store holds no timer, so there is nothing to stop — but it is
-    # cleared so a re-enable rebuilds it against the data dir it is given then.
-    _appearances = None
+    runtime.reset_for_tests()

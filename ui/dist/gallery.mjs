@@ -1,7 +1,7 @@
 import { i as useDialogFocusTrap, n as PANEL_RADIUS, t as PANEL_FONT } from "./chunks/panelSkin-BjvlW4rb.mjs";
 import { E as i18nT } from "./chunks/constants-De1Fjrra.mjs";
 import { O as ghostPoseForKey, _ as OPTIONAL_STATES, a as petBridge, b as STATUS_STATES, c as toDataUri, d as isValidHexColor, f as SpriteRenderer, g as LEGACY_STATES, h as BREATHING_STATES, l as applySvgColorMap, m as ALL_MOODS, n as useDocumentImeLatch, o as kiro_idle_default, p as LottieRenderer, r as galleryApi, s as injectCss, t as WindowRoot, u as extractSvgColors, v as RANDOM_STATES, w as GhostEyeOverlay, x as GHOST_ACCESSORIES, y as REQUIRED_STATES } from "./chunks/WindowRoot-R1vuzr9j.mjs";
-import { n as fmtList } from "./chunks/format-DYyEE5ak.mjs";
+import { n as fmtList } from "./chunks/format-B9AOzdKC.mjs";
 import { n as errorText, t as Select } from "./chunks/Select-DskXH9SX.mjs";
 import { useImeGuard } from "@kirocrew/app-sdk";
 import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";

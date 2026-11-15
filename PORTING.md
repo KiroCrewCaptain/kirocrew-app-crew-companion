@@ -58,6 +58,7 @@ Kiro Crew change (a generic, app-agnostic App Kit seam), not a change here.
 | `"backend": {"routes": "backend.routes:register_routes", "hooks": {...}}` (`app.json:17-23`) | `"backend": {"hooks": {"routes": ..., "on_startup": ..., "on_shutdown": ...}}` | Top-level `backend.routes` is read only by the built-in boot loop. An external app's routes go through the gateway's `RouteRegistry`, which also serves them only while the app is enabled. |
 | `register_routes(app)` adding aiohttp routes under `/api/apps/crew-companion` (`backend/routes.py:446-510`) | `register_routes(ctx)` returning `Route(method, path, handler)` records relative to that base | The registry's structural route records. The table is the same, method for method (`tests/test_routes.py::TestGate::test_the_route_table_is_the_built_ins`). |
 | `_require_enabled`: 403 `app_disabled` while the app is off (`backend/routes.py:96-125`) | the registry answers a disabled app's routes itself (404) | The registry deregisters the routes on disable. The 503 `runtime_not_started` and `store_write_failed` answers are kept. No page relied on the 403: a disabled app's windows are closed and its page is not served. |
+| The runtime (the reminder store, the avatar store) as globals of `hooks.py` (`hooks.py:29-33`) | `backend/runtime.py`, which `hooks.py` and `routes.py` both import | The gateway executes each hook entry's file into a fresh module, so the `hooks` module whose `on_startup` ran is not the one the routes imported; a module no hook entry names is shared by both (`tests/test_hook_loading.py`). |
 | `require_owner_dashboard_request` from `kiro_crew.dashboard.handlers._shared` (`backend/routes.py:45`) | `ctx.require_owner` (`backend/_host.py`) | The host's public owner gate, the same rule, audit and 403 `owner_only`. A gateway without it refuses every write. |
 | `kiro_crew.appearance_packs` imported at module load (`hooks.py:24`, `backend/routes.py:37-42`) | resolved at call time in `backend/_host.py`; without it the gallery routes answer 503 `appearances_unavailable` | No App Kit seam offers the avatar library yet. It validates attacker-authored bundles and pins the host PetDex lookups may reach, so a copy here would be a second validator. **Gap.** |
 | `kiro_crew.atomic_write`, `owner_only_files`, `user_json` (`store.py:69-71`) | the same functions through `backend/_host.py`, with standard-library fallbacks | The store keeps the gateway's Windows-aware replace and owner-only temp file. **Gap** (small, non-security helpers would also do). |
@@ -104,6 +105,11 @@ Two differences a user could notice, both from the seam's own rules:
   page's timer cannot start a drag that way.
 - `panelHold` and `panelBreathing` are accepted and do nothing, as in the
   built-in, whose shell recorded them and read them nowhere.
+
+One difference from the gateway's handling of an installed app: turning the app
+off unloads its modules, so turning it on again within the same gateway run
+starts the next break interval afresh, where the built-in kept its in-memory
+schedule. Reminders, settings, stats and avatars are on disk and are kept.
 
 ## Gaps (what blocks deleting the wheel copy, not adopting it)
 

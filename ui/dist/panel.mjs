@@ -2,7 +2,7 @@ import { C as appFetch, E as i18nT, b as SKIP_PATH, l as BREAK_PRESETS, u as BRE
 import { a as petBridge, s as injectCss, t as WindowRoot } from "./chunks/WindowRoot-R1vuzr9j.mjs";
 import { t as PetAvatar } from "./chunks/PetAvatar-B9Vtjs5N.mjs";
 import { i as useDialogFocusTrap, r as useSkin, t as PANEL_FONT } from "./chunks/panelSkin-BjvlW4rb.mjs";
-import { i as fmtUnit, r as fmtTime, t as fmtDateFields } from "./chunks/format-DYyEE5ak.mjs";
+import { i as fmtUnit, r as fmtTime, t as fmtDateFields } from "./chunks/format-B9AOzdKC.mjs";
 import { a as labelFor, c as sortedReminders, i as clampBreakMins, n as RadioChipGroup, r as radioChip, t as parseReminder } from "./chunks/reminderParse-CJkDpEbU.mjs";
 import { useImeGuard } from "@kirocrew/app-sdk";
 import React, { useCallback, useEffect, useRef, useState } from "react";

@@ -19,7 +19,8 @@ export type FormatUnit =
   | 'byte' | 'kilobyte' | 'megabyte' | 'gigabyte' | 'terabyte'
   | 'kilobyte-per-second' | 'megabyte-per-second'
 
-const NO_VALUE = '—'
+/** What the dashboard shows for a value it cannot format (U+2014). */
+const NO_VALUE = '\u2014'
 
 /** A millisecond timestamp below this is read as seconds, as the dashboard does. */
 const SECONDS_CEILING = 1e11
