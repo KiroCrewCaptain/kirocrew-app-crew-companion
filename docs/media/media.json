@@ -1,0 +1,105 @@
+{
+  "app": "crew-companion",
+  "captured_at": "2026-11-15T01:06:33Z",
+  "app_commit": "b8d85726f82a1a7bf74031b40b7810130e503b78",
+  "kirocrew_commit": "33979525d89382cf64d8b109c553e0561c57acbb",
+  "kirocrew_tree_dirty": true,
+  "gateway": "isolated temporary home, approval=reads; a freshly seeded gateway for the stub screenshots, one for the live ones and one for the walkthrough",
+  "data": "fictional, seeded through the app's HTTP API (capture/scenes.json)",
+  "agent_backend": {
+    "live": [],
+    "live_model": null,
+    "stub": "Kiro Crew's offline stub ACP backend (capture/stub_backend.py) for every other scene; no chat reply is shown from it",
+    "credit_reading": "the browser answers the top bar's credit readout (/api/sessions/usage) with \"no reading\", so no account balance or email can be shown"
+  },
+  "note": "This repository installed from its own folder into the throwaway home of a Kiro Crew checkout whose built-in Crew Companion was removed, as a release that no longer ships it would be. The desktop windows (the companion with its bubble, the panel and the avatar gallery) are the app's own window pages on the gateway's desktop window route, in Chromium, with a stand-in for the desktop app's window bridge; the desktop app itself was not running.",
+  "data_notes": [
+    "Reminder times are set relative to the moment of the capture, so the panel's 'in N minutes' labels are real.",
+    "The companion's bubble shows a reminder handed to the window the way the hidden notification window hands it over; the reminder itself was added through the app's own API."
+  ],
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "device_scale": 2,
+  "screenshots": [
+    {
+      "file": "companion-bubble-light.png",
+      "name": "companion-bubble",
+      "theme": "light",
+      "bytes": 33214,
+      "width": 1040,
+      "height": 640,
+      "alt": "The companion floating on the desktop with a speech bubble saying Drink a glass of water."
+    },
+    {
+      "file": "hero-dark.png",
+      "name": "hero",
+      "theme": "dark",
+      "bytes": 237149,
+      "width": 1600,
+      "height": 1000,
+      "alt": "The Crew Companion page in Kiro Crew: break nudges every 45 minutes, three upcoming reminders written in plain words, and the memories card."
+    },
+    {
+      "file": "hero-light.png",
+      "name": "hero",
+      "theme": "light",
+      "bytes": 215909,
+      "width": 1600,
+      "height": 1000,
+      "alt": "The Crew Companion page in Kiro Crew: break nudges every 45 minutes, three upcoming reminders written in plain words, and the memories card."
+    },
+    {
+      "file": "use-case-avatar-light.png",
+      "name": "use-case-avatar",
+      "theme": "light",
+      "bytes": 103613,
+      "width": 1600,
+      "height": 1204,
+      "alt": "The avatar gallery window: the built-in Kiro ghost, which is active, next to a custom avatar called Sprout, with Import from PetDex and Make your own at the top."
+    },
+    {
+      "file": "use-case-breaks-light.png",
+      "name": "use-case-breaks",
+      "theme": "light",
+      "bytes": 42624,
+      "width": 1520,
+      "height": 474,
+      "alt": "The Settings card on the Crew Companion page: break nudges switched on with 45 minutes chosen, and session notifications switched on."
+    },
+    {
+      "file": "use-case-reminders-dark.png",
+      "name": "use-case-reminders",
+      "theme": "dark",
+      "bytes": 72118,
+      "width": 768,
+      "height": 808,
+      "alt": "The companion's panel on the desktop: an Up next list with Drink a glass of water in 20 minutes, Stand up and stretch every hour, and Call the dentist back, above a box for a new reminder."
+    },
+    {
+      "file": "use-case-reminders-light.png",
+      "name": "use-case-reminders",
+      "theme": "light",
+      "bytes": 71661,
+      "width": 768,
+      "height": 808,
+      "alt": "The companion's panel on the desktop: an Up next list with Drink a glass of water in 20 minutes, Stand up and stretch every hour, and Call the dentist back, above a box for a new reminder."
+    }
+  ],
+  "walkthrough": {
+    "shortened_waits_s": [],
+    "mp4": {
+      "file": "walkthrough.mp4",
+      "bytes": 222126
+    },
+    "gif": {
+      "file": "walkthrough.gif",
+      "bytes": 1228652,
+      "width": 960,
+      "fps": 10
+    },
+    "theme": "light",
+    "alt": "A walkthrough of the Crew Companion page: typing stretch my legs in 15 minutes into the reminder box adds it to the list as 15 min from now, then the break rhythm is changed from 45 to 30 minutes."
+  }
+}

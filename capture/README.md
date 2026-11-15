@@ -146,8 +146,22 @@ no machine-specific path goes into `scenes.json`:
 A **screenshot** has `name` (kebab-case; the file is `<name>-<theme>.png`),
 `path`, `alt` (required), `themes` (default both), `ready`, `steps`,
 `ready_after` (selector to wait for after the steps), `settle_ms`, `clip`
-(selector: capture only that element), `forbid_text`, `settle_hidden` and
-`live` (`true`: run against the real model, see above).
+(selector: capture only that element), `clip_box` (`{x, y, width, height}` in
+page pixels: capture only that area), `forbid_text`, `settle_hidden`,
+`desktop_window` (below) and `live` (`true`: run against the real model, see
+above).
+
+A shot with **`desktop_window`** photographs one of the app's desktop windows
+(`desktop.windows` in `app.json`): set `path` to
+`/popout/desktop/<app>/<window id>` and give `{"window": "<id>", "kind":
+"overlay" | "panel" | "background"}`, optionally `"viewport": {"width", "height"}`
+(the window's size) and `"messages": [{"from": "<window id>", "message": ...}]`.
+A browser has no desktop app, so the page gets a stand-in for the desktop app's
+window bridge: it answers `ready` the way the desktop app does for that one
+window (an overlay hosts the avatar, a panel opened on the right) and then hands
+the page each listed message as if that other window had sent it. The window is
+transparent, so the picture keeps a transparent background. Say in
+`provenance_note` that the desktop app itself was not running.
 
 The **walkthrough** has `name`, `path`, `theme`, `alt`, `steps`, `tail_ms` and
 `live`.
@@ -158,7 +172,8 @@ the model actually replied in the run that produced the files. Re-read them
 after every live capture.
 
 **Steps** (one verb per object; `{{var}}` is replaced with values saved in
-`setup`, and `{{app_root}}` with this repository's root):
+`setup`, `{{app_root}}` with this repository's root, and `{{in_<N>m}}` with the
+UTC time N minutes from now, for data the app schedules):
 
 | Step | Does |
 |---|---|
