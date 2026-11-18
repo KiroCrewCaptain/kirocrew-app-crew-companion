@@ -18,6 +18,10 @@ shell code):
   `SpriteImporterCoverage`, `RadioChipGroup`, `dashboardTheme` and the
   `Frontend5Cc*` coverage files) and those beside the page sources.
 
+It is current with those files up to KiroCrew `main` `5ca143070d`: "Kiro Crew
+changes after the port" below lists every later change to them and where it is
+here.
+
 Paths below refer to that commit. A **gap** is something the built-in gets from
 Kiro Crew that an external app has no public way to get yet; closing one is a
 Kiro Crew change (a generic, app-agnostic App Kit seam), not a change here.
@@ -111,6 +115,33 @@ off unloads its modules, so turning it on again within the same gateway run
 starts the next break interval afresh, where the built-in kept its in-memory
 schedule. Reminders, settings, stats and avatars are on disk and are kept.
 
+Which desktop app draws the avatar once a gateway has adopted this app, for every
+desktop app a user can have beside a newer gateway (one installed separately,
+run as a service or reached over a tunnel; the desktop app's own bundled gateway
+is never newer than it):
+
+| Desktop app | Draws |
+|---|---|
+| 0.12 and earlier (no window host) | its built-in windows, from the pages the gateway still ships at `/app-windows/crew-companion/`, over this app's routes |
+| 0.13.0-rc.1 (a window host that refuses `displays`, `background` and `gutter`, so it hosts nothing for this app) | its built-in windows, as above |
+| 0.13.0-rc.2 and later | this app's windows, through the window host; the built-in code stands down because the record's `origin` is not `builtin` (kirodotdev/KiroCrew#37430), and, from kirodotdev/KiroCrew#37454, also because the record declares a `desktop` block |
+
+No desktop app draws both, and none draws anything while the app is off.
+
+## Kiro Crew changes after the port
+
+Every change to the built-in's files in Kiro Crew after `af94fac51f`, up to
+`main` `5ca143070d`, and where it is here:
+
+| Kiro Crew change | What it changed in the built-in | Here |
+|---|---|---|
+| kirodotdev/KiroCrew#34653, a Scheduled theme (light from one local time, dark from another) | `dashboardTheme.ts`: `applyThemeId` resolves `mc-theme` = `schedule` on the device clock, and `watchThemeChanges` repaints on the schedule's key and when the shell re-pins the appearance; two tests in `dashboardTheme.test.ts` | Nothing to carry. Neither function is here: a hosted window loads the dashboard's own document (see "What changed, and why"), whose theme provider resolves Scheduled and follows the shell's appearance for every app window, and the page runs inside the dashboard, which does the same. |
+| kirodotdev/KiroCrew#37430, the companion's windows handed to its installed copy | The built-in's shell code closes its windows for a record whose `origin` is not `builtin`, and copies the display its avatar was last on into the window host's record for `crew-companion/pet` | Nothing to carry: main-process code, which this repository does not have. It is why an existing user sees one avatar after adoption, on the display it was on. |
+| kirodotdev/KiroCrew#37454, built-in shell code steps aside for the window host | The same shell code also closes its windows for a record that declares a manifest `desktop` block, on or off | Nothing to carry, for the same reason. This app's record declares the block, so a desktop app with this rule stands the built-in down on either check. |
+
+No later change touched the backend, the page's catalogs, the shared strings or
+the store art.
+
 ## Gaps (what blocks deleting the wheel copy, not adopting it)
 
 - The avatar library (`kiro_crew.appearance_packs`) and the store's file helpers
@@ -122,6 +153,10 @@ schedule. Reminders, settings, stats and avatars are on disk and are kept.
   built-in did. The SDK's `useAppEvents` does not deliver socket events to an app
   bundle yet, and an app token's stream is scoped to the app's own slots, which
   is not what a companion that tells you when any session finishes needs.
+- The built-in's window pages (`/app-windows/crew-companion/pet.html`,
+  `panel.html`, `gallery.html`) are what a desktop app without a window host, or
+  with 0.13.0-rc.1's, still draws (the table above). Deleting them leaves such a
+  desktop app with no companion.
 
 ## Tests
 
