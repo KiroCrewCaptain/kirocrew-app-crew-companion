@@ -28,15 +28,18 @@ Kiro Crew change (a generic, app-agnostic App Kit seam), not a change here.
 
 ## What carried over unchanged
 
-- `app.json` `name` (`crew-companion`), `version` (`1.0.0`), `author`,
-  `permissions`, `platform` (including `requiresDesktopApp`),
-  `defaultEnabled: false`, `tags` and every display field (`displayName`,
-  `description`, `highlights`, `useCases`, `configuration`).
+- `app.json` `name` (`crew-companion`), `author`, `permissions`, `platform`
+  (including `requiresDesktopApp`), `defaultEnabled: false`, `tags` and every
+  display field (`displayName`, `description`, `highlights`, `useCases`,
+  `configuration`).
   `tests/test_manifest_contract.py` compares them with the built-in's manifest
   (`tests/fixtures/builtin-app.json`), because adoption refuses a manifest that
   widens a grant or forces the app off. No grant is added: the page, the windows
   and the backend reach only `/api/apps/crew-companion/*`, which the built-in
-  already declared.
+  already declared. The `version` was the built-in's `1.0.0` at the port; this
+  repository released `1.0.1` once it was current with the built-in (see "Kiro
+  Crew changes after the port"), and a Kiro Crew release that pins it moves the
+  wheel copy's version to the same `1.0.1`, as adoption requires.
 - Every route's method, path, validation, status codes, error `code`s and
   response shape, and the owner-only rule for every write. The handler bodies
   are the built-in's.
