@@ -17,6 +17,7 @@ import pytest
 from backend.reminders import parse_iso, to_iso
 from backend.store import (
     MAX_PENDING,
+    STATS_FLUSH_SECONDS,
     CompanionStore,
 )
 
@@ -539,7 +540,11 @@ class TestStatsSurviveACrash:
     caps the loss at one window without writing the disk at 1 Hz.
     """
 
-    def test_ticked_seconds_survive_an_ungraceful_exit(self, tmp_path):
+    def test_ticked_seconds_survive_an_ungraceful_exit(self, tmp_path, monkeypatch):
+        # The flush window is measured on the monotonic clock from 0, which a
+        # host booted less than one window ago has not reached yet: pin it.
+        fake = {"t": STATS_FLUSH_SECONDS + 1.0}
+        monkeypatch.setattr(time_mod, "monotonic", lambda: fake["t"])
         clock = Clock()
         s = CompanionStore(tmp_path, rand=lambda: 0.0, now=clock)
         s.load()
@@ -549,6 +554,7 @@ class TestStatsSurviveACrash:
         for _ in range(3):
             s.tick()
             clock.advance(seconds=1)
+            fake["t"] += 1.0
 
         # No stop(), no other mutation — this is the crash.
         reopened = CompanionStore(tmp_path, rand=lambda: 0.0, now=clock)
